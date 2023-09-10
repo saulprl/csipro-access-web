@@ -6,10 +6,18 @@ module.exports = {
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
     "plugin:react-hooks/recommended",
+    "plugin:react/recommended",
+    "plugin:react/jsx-runtime",
     "prettier",
   ],
   ignorePatterns: ["dist", ".eslintrc.cjs"],
   parser: "@typescript-eslint/parser",
+  parserOptions: {
+    ecmaVersion: "latest",
+    sourceType: "module",
+    project: true,
+    tsconfigRootDir: __dirname,
+  },
   plugins: ["react-refresh", "import", "check-file", "react"],
   rules: {
     "prettier/prettier": "error",
@@ -17,6 +25,16 @@ module.exports = {
       "off",
       { allowConstantExport: true },
     ],
+    "@typescript-eslint/no-misused-promises": [
+      "error",
+      { checksVoidReturn: { attributes: false } },
+    ],
+    "@typescript-eslint/no-non-null-assertion": "off",
+    "@typescript-eslint/no-unused-vars": [
+      "warn",
+      { argsIgnorePattern: "^_", varsIgnorePattern: "^_" },
+    ],
+    "react/prop-types": "off",
     "react/jsx-wrap-multilines": [
       "error",
       {
@@ -69,7 +87,6 @@ module.exports = {
       typescript: {
         alwaysTryTypes: true,
         project: "./tsconfig.json",
-
       },
     },
   },

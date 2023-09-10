@@ -1,36 +1,43 @@
 /* eslint-disable check-file/filename-naming-convention */
-import { useState } from "react";
+import { Toaster } from "react-hot-toast";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { useSigninCheck } from "reactfire";
 
-import "./App.css";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "./assets/vite.svg";
+import { Splash } from "./components/splash/splash";
+import { Login } from "./routes/login";
+import { MainApp } from "./routes/main-app";
+import { ProtectedRoute } from "./routes/protected-route";
 
 function App() {
-  const [count, setCount] = useState(0);
+  const { status, data, error } = useSigninCheck();
+
+  if (status === "loading") {
+    return <Splash loading />;
+  }
+
+  if (status === "error") {
+    return <Splash message={error?.message ?? "Something went wrong"} />;
+  }
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <main className="relative flex min-h-screen flex-col items-center justify-between bg-muted font-sans text-white">
+      <BrowserRouter>
+        <Routes>
+          <Route
+            path="/"
+            element={<ProtectedRoute isAuthenticated={data.signedIn} />}
+          >
+            <Route path="/" element={<Navigate to="/app" replace />} />
+            <Route path="/app/*" element={<MainApp />} />
+          </Route>
+          <Route
+            path="/login"
+            element={data.signedIn ? <Navigate to="/" /> : <Login />}
+          />
+        </Routes>
+      </BrowserRouter>
+      <Toaster position="bottom-center" />
+    </main>
   );
 }
 
