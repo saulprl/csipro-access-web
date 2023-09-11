@@ -4,9 +4,13 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { useSigninCheck } from "reactfire";
 
 import { Splash } from "./components/splash/splash";
+import { AppIndex } from "./routes/app";
+import { AuthCallback } from "./routes/auth-callback/auth-callback";
+import { GoogleOAuth } from "./routes/auth-callback/google-oauth";
 import { Login } from "./routes/login";
 import { MainApp } from "./routes/main-app";
 import { ProtectedRoute } from "./routes/protected-route";
+import { QRCodePage } from "./routes/qr-code";
 
 function App() {
   const { status, data, error } = useSigninCheck();
@@ -28,11 +32,22 @@ function App() {
             element={<ProtectedRoute isAuthenticated={data.signedIn} />}
           >
             <Route path="/" element={<Navigate to="/app" replace />} />
-            <Route path="/app/*" element={<MainApp />} />
+            <Route path="/app" element={<MainApp />}>
+              <Route path="/app" element={<AppIndex />} />
+              <Route path="/app/qr-code" element={<QRCodePage />} />
+            </Route>
           </Route>
           <Route
             path="/login"
             element={data.signedIn ? <Navigate to="/" /> : <Login />}
+          />
+          <Route
+            path="/oauth/callback"
+            element={data.signedIn ? <Navigate to="/" /> : <AuthCallback />}
+          />
+          <Route
+            path="/__/auth/handler"
+            element={data.signedIn ? <Navigate to="/" /> : <GoogleOAuth />}
           />
         </Routes>
       </BrowserRouter>

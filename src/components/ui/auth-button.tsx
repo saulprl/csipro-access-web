@@ -1,4 +1,8 @@
-import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import {
+  GoogleAuthProvider,
+  signInWithPopup,
+  signInWithRedirect,
+} from "firebase/auth";
 import { FC } from "react";
 import toast from "react-hot-toast";
 import { useAuth } from "reactfire";
@@ -31,6 +35,11 @@ export const AuthButton: FC<Props> = ({ provider, ...rest }) => {
       icon: "/images/auth/google-g.png",
       onClick: async () => {
         const google = new GoogleAuthProvider();
+        if (import.meta.env.PROD) {
+          await signInWithRedirect(auth, google);
+          return;
+        }
+
         const result = await signInWithPopup(auth, google);
         const credential = GoogleAuthProvider.credentialFromResult(result);
         if (!credential) {

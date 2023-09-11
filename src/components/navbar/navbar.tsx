@@ -12,15 +12,25 @@ import {
   navigationMenuTriggerStyle,
 } from "../ui/navigation-menu";
 
-export const Navbar = () => {
+interface Props {
+  orientation?: "horizontal" | "vertical";
+}
+
+export const Navbar: FC<Props> = ({ orientation = "horizontal" }) => {
   return (
-    <NavigationMenu className="bg-muted font-medium">
+    <NavigationMenu
+      orientation={orientation}
+      className={cn(
+        "hidden bg-muted font-medium md:flex",
+        orientation === "vertical" && "flex-col",
+      )}
+    >
       <NavigationMenuList>
         <NavigationMenuItem>
-          <NavbarLink to="/">Home</NavbarLink>
+          <NavbarLink to="/app">Home</NavbarLink>
         </NavigationMenuItem>
         <NavigationMenuItem>
-          <NavbarLink to="/dash">Dashboard</NavbarLink>
+          <NavbarLink to="/app/dashboard">Dashboard</NavbarLink>
         </NavigationMenuItem>
         {/* <NavigationMenuItem>
           <NavbarLink to="/">Access Logs</NavbarLink>
@@ -32,7 +42,7 @@ export const Navbar = () => {
           <NavbarLink to="/">User management</NavbarLink>
         </NavigationMenuItem> */}
         <NavigationMenuItem>
-          <NavbarLink to="/qr">QR Code</NavbarLink>
+          <NavbarLink to="/app/qr-code">QR Code</NavbarLink>
         </NavigationMenuItem>
       </NavigationMenuList>
       <NavigationMenuViewport />
