@@ -11,22 +11,25 @@ export const QRCodePage = () => {
     return <Splash loading />;
   }
 
-  if (userStatus === "error") {
-    return <Splash message={userError?.message ?? "Something went wrong"} />;
-  }
+  // if (userStatus === "error") {
+  //   return <Splash message={userError?.message ?? "Something went wrong"} />;
+  // }
 
-  if (userStatus === "success" && !userData) {
-    return <Splash message="You don't seem to be logged in" />;
-  }
+  // if (userStatus === "success" && !userData) {
+  //   return <Splash message="You don't seem to be logged in" />;
+  // }
 
   return (
     <div className="flex min-h-screen w-full flex-col items-center">
       <Header title="QR Code" />
-      <div className="flex flex-col items-center gap-4 p-4">
+      <div className="flex w-full flex-col items-center justify-center gap-2 px-4 py-2">
         <h1 className="text-center text-lg">
           Show your QR code on the scanner
         </h1>
         <QRGenerator user={userData!} />
+        <p className="text-center text-sm">
+          Your code with regenerate every 20 seconds
+        </p>
       </div>
     </div>
   );
