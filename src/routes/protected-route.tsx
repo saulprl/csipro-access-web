@@ -12,9 +12,9 @@ export const ProtectedRoute: FC<Props> = ({
   redirectPath = "/login",
   children,
 }) => {
-  // if (!isAuthenticated) {
-  //   return <Navigate to={redirectPath} replace />;
-  // }
+  if (!isAuthenticated) {
+    return <Navigate to={redirectPath} replace />;
+  }
 
   return children ? children : <Outlet />;
 };

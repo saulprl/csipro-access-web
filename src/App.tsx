@@ -6,7 +6,6 @@ import { useSigninCheck } from "reactfire";
 import { Splash } from "./components/splash/splash";
 import { AppIndex } from "./routes/app";
 import { AuthCallback } from "./routes/auth-callback/auth-callback";
-import { GoogleOAuth } from "./routes/auth-callback/google-oauth";
 import { Login } from "./routes/login";
 import { MainApp } from "./routes/main-app";
 import { ProtectedRoute } from "./routes/protected-route";
@@ -45,10 +44,10 @@ function App() {
             path="/oauth/callback"
             element={data.signedIn ? <Navigate to="/" /> : <AuthCallback />}
           />
-          <Route
+          {/* <Route
             path="/__/auth/handler"
             element={data.signedIn ? <Navigate to="/" /> : <GoogleOAuth />}
-          />
+          /> */}
         </Routes>
       </BrowserRouter>
       <Toaster position="bottom-center" />
